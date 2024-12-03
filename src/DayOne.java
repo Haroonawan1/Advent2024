@@ -6,12 +6,12 @@ import java.util.Scanner;
 
 public class DayOne {
     public static void main(String[] args) {
-        System.out.println("Day 1 Star One: " + starOne("data/day1Input"));
-        System.out.println("Day 1 Star Two: " + starTwo("data/day1Input"));
+        ArrayList<String> fileData = getFileData("data/day1Input");
+        System.out.println("Star One: " + starOne(fileData));
+        System.out.println("Star Two: " + starTwo(fileData));
     }
 
-    public static int starOne(String filePath) {
-        ArrayList<String> fileData = getFileData(filePath);
+    public static int starOne(ArrayList<String> fileData) {
         int[] leftData = new int[fileData.size()];
         int[] rightData = new int[fileData.size()];
 
@@ -30,8 +30,7 @@ public class DayOne {
         return totalDistance;
     }
 
-    public static int starTwo(String filePath) {
-        ArrayList<String> fileData = getFileData(filePath);
+    public static int starTwo(ArrayList<String> fileData) {
         int[] leftData = new int[fileData.size()];
         int[] rightData = new int[fileData.size()];
 
