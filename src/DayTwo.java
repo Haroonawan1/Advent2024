@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,26 +38,40 @@ public class DayTwo {
     public static int starTwo(ArrayList<String> fileData) {
         int validReports = 0;
 
-        for (String fileDatum : fileData) {
-            String[] splitData = fileDatum.split(" ");
-            ArrayList<Integer> deltas = new ArrayList<>(List.of(splitData.length - 1));
+        for (String row : fileData) {
+            String[] splitData = row.split(" ");
+            ArrayList<Integer> deltas = new ArrayList<>();
 
             for (int j = 0; j < splitData.length - 1; j++) {
-                deltas.add(Integer.parseInt(splitData[j]) - Integer.parseInt(splitData[j + 1]));
+                deltas.add(Integer.parseInt(splitData[j + 1]) - Integer.parseInt(splitData[j]));
             }
 
             boolean valid = true;
-            for (int j = 0; j < deltas.size() - 1; j++) {
-                if (!(1 <= Math.abs(deltas.get(j)) && Math.abs(deltas.get(j)) <= 3 && (deltas.get(j) * deltas.get(j + 1) > 0))) {
+
+            for (int j = 0; j < deltas.size(); j++) {
+                int nextIdx = j + 1;
+                if (nextIdx == deltas.size()) {
+                    nextIdx = 0;
+                }
+
+                if (!(1 <= Math.abs(deltas.get(j)) && Math.abs(deltas.get(j)) <= 3 && (deltas.get(j) * deltas.get(nextIdx) > 0))) {
+                    System.out.println(deltas);
                     int currentRemoved = deltas.remove(j);
-                    for (int k = 0; k < deltas.size() - 1; k++) {
-                        if (!(1 <= Math.abs(deltas.get(k)) && Math.abs(deltas.get(k)) <= 3 && (deltas.get(k) * deltas.get(k + 1) > 0))) {
+                    System.out.println("after" + deltas);
+                    for (int k = 0; k < deltas.size(); k++) {
+                        int nextIdx2 = k + 1;
+                        if (nextIdx2 == deltas.size()) {
+                            nextIdx2 = 0;
+                        }
+
+                        if (!(1 <= Math.abs(deltas.get(k)) && Math.abs(deltas.get(k)) <= 3 && (deltas.get(k) * deltas.get(nextIdx2) > 0))) {
+                            System.out.println("bad still");
                             valid = false;
                         }
                     }
                 }
-            }
 
+            }
             if (valid) {
                 validReports++;
             }
