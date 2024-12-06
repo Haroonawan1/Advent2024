@@ -46,38 +46,36 @@ public class DayTwo {
                 deltas.add(Integer.parseInt(splitData[j + 1]) - Integer.parseInt(splitData[j]));
             }
 
-            boolean valid = true;
+            boolean valid = isValid(deltas);
 
-            for (int j = 0; j < deltas.size(); j++) {
-                int nextIdx = j + 1;
-                if (nextIdx == deltas.size()) {
-                    nextIdx = 0;
-                }
+            if (!valid) {
+                for (int k = 0; k < deltas.size(); k++) {
+                    int currentRemoved = deltas.remove(k);
 
-                if (!(1 <= Math.abs(deltas.get(j)) && Math.abs(deltas.get(j)) <= 3 && (deltas.get(j) * deltas.get(nextIdx) > 0))) {
-                    System.out.println(deltas);
-                    int currentRemoved = deltas.remove(j);
-                    System.out.println("after" + deltas);
-                    for (int k = 0; k < deltas.size(); k++) {
-                        int nextIdx2 = k + 1;
-                        if (nextIdx2 == deltas.size()) {
-                            nextIdx2 = 0;
-                        }
-
-                        if (!(1 <= Math.abs(deltas.get(k)) && Math.abs(deltas.get(k)) <= 3 && (deltas.get(k) * deltas.get(nextIdx2) > 0))) {
-                            System.out.println("bad still");
-                            valid = false;
-                        }
+                    if (isValid(deltas)) {
+                        valid = true;
                     }
-                }
 
+                    deltas.add(k, currentRemoved);
+                }
             }
+
             if (valid) {
                 validReports++;
             }
         }
 
         return validReports;
+    }
+
+    public static boolean isValid(ArrayList<Integer> deltas) {
+        boolean valid = true;
+        for (int i = 0; i < deltas.size() - 1; i++) {
+            if (!(1 <= Math.abs(deltas.get(i)) && Math.abs(deltas.get(i)) <= 3 && (deltas.get(i) * deltas.get(i + 1) > 0))) {
+                valid = false;
+            }
+        }
+        return valid;
     }
 
     public static ArrayList<String> getFileData(String fileName) {
