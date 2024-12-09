@@ -11,11 +11,55 @@ public class DayThree {
     }
 
     public static int starOne(ArrayList<String> fileData) {
-        return 0;
+        int sum = 0;
+        for (String row : fileData) {
+            for (int i = 0; i < row.length() - 4; i++) {
+                if (row.startsWith("mul(", i)) {
+                    int endIdx = row.substring(i + 4).indexOf(")") + i + 4;
+                    String mul = row.substring(i, endIdx + 1);
+
+                    try {
+                        int num1 = Integer.parseInt(mul.substring(mul.indexOf("(") + 1, mul.indexOf(",")));
+                        int num2 = Integer.parseInt(mul.substring(mul.indexOf(",") + 1, mul.length() - 1));
+                        sum += (num1 * num2);
+
+                    } catch (Exception _) {
+
+                    }
+                }
+            }
+        }
+        return sum;
     }
 
     public static int starTwo(ArrayList<String> fileData) {
-        return 0;
+        int sum = 0;
+        boolean enabled = true;
+
+        for (String row : fileData) {
+            for (int i = 0; i < row.length() - 4; i++) {
+                if (row.startsWith("do()", i)) {
+                    enabled = true;
+                } else if (row.startsWith("don't()", i)) {
+                    enabled = false;
+                }
+
+                if (enabled && row.startsWith("mul(", i)) {
+                    int endIdx = row.substring(i + 4).indexOf(")") + i + 4;
+                    String mul = row.substring(i, endIdx + 1);
+
+                    try {
+                        int num1 = Integer.parseInt(mul.substring(mul.indexOf("(") + 1, mul.indexOf(",")));
+                        int num2 = Integer.parseInt(mul.substring(mul.indexOf(",") + 1, mul.length() - 1));
+                        sum += (num1 * num2);
+
+                    } catch (Exception _) {
+
+                    }
+                }
+            }
+        }
+        return sum;
     }
 
     public static ArrayList<String> getFileData(String fileName) {
