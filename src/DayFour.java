@@ -18,12 +18,32 @@ public class DayFour {
         }
 
         int sum = 0;
+
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
                 if (data[i][j].equals("X")) {
-                    if (j + 3 < data[i].length && data[i][j + 3].equals("XMAS")) {
-                        System.out.println();
+                    System.out.println(String.join("", Arrays.copyOfRange(data[i], j, j + 4)));
+
+                    if (String.join("", Arrays.copyOfRange(data[i], j, j + 4)).equals("XMAS")) {
+                        sum++;
                     }
+
+                    String[] diags = new String[4];
+                    for (int k = 0; k < 4; k++) {
+                        //if (i + k < data.length && i - k >= 0 && j + k < data[i].length && j - k >= 0)
+
+                        diags[0] += String.valueOf(data[i + k][j + k]);
+                        diags[1] += String.valueOf(data[i - k][j + k]);
+                        diags[2] += String.valueOf(data[i - k][j - k]);
+                        diags[3] += String.valueOf(data[i + k][j - k]);
+                    }
+
+                    for (String diag: diags) {
+                        System.out.println(diag);
+
+
+                    }
+
                 }
             }
         }
