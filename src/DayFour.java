@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class DayFour {
     public static void main(String[] args) {
-        ArrayList<String> fileData = getFileData("data/day4Input");
+        ArrayList<String> fileData = getFileData("data/testInput");
         System.out.println("Star One: " + starOne(fileData));
         System.out.println("Star Two: " + starTwo(fileData));
     }
@@ -22,33 +22,66 @@ public class DayFour {
         for (int i = 0; i < data.length; i++) {
             for (int j = 0; j < data[i].length; j++) {
                 if (data[i][j].equals("X")) {
-                    System.out.println(String.join("", Arrays.copyOfRange(data[i], j, j + 4)));
+                    boolean[] checks = new boolean[8];
+                    checks[0] = checkLeftRight(data[i], j, "left");
+                    checks[1] = checkLeftRight(data[i], j, "right");
+                    checks[2] = checkUpDown(data, i, j, "up");
+                    checks[3] = checkUpDown(data, i, j, "down");
 
-                    if (String.join("", Arrays.copyOfRange(data[i], j, j + 4)).equals("XMAS")) {
-                        sum++;
+
+                    for (boolean check : checks) {
+                        if (check) {
+                            sum++;
+                        }
                     }
-
-                    String[] diags = new String[4];
-                    for (int k = 0; k < 4; k++) {
-                        //if (i + k < data.length && i - k >= 0 && j + k < data[i].length && j - k >= 0)
-
-                        diags[0] += String.valueOf(data[i + k][j + k]);
-                        diags[1] += String.valueOf(data[i - k][j + k]);
-                        diags[2] += String.valueOf(data[i - k][j - k]);
-                        diags[3] += String.valueOf(data[i + k][j - k]);
-                    }
-
-                    for (String diag: diags) {
-                        System.out.println(diag);
-
-
-                    }
-
                 }
             }
         }
 
         return sum;
+    }
+
+    public static boolean checkLeftRight(String[] row, int col, String direction) {
+        try {
+            if (direction.equals("left")) {
+                return String.join("", Arrays.copyOfRange(row, col, col + 4)).equals("XMAS");
+            } else {
+                return String.join("", Arrays.copyOfRange(row, col - 3, col + 1)).equals("SAMX");
+            }
+        } catch (Exception _) {}
+        return false;
+    }
+
+    public static boolean checkUpDown(String[][] data, int row, int col, String direction) {
+        String check = "";
+
+        try {
+            for (int i = 0; i < 4; i++) {
+                if (direction.equals("up")) {
+                    check += data[row - i][col];
+                } else {
+                    check += data[row + i][col];
+                }
+            }
+        } catch (Exception _) {}
+
+        return check.equals("XMAS");
+    }
+
+    public static boolean checkDiags(String[][] data, int row, int col) {
+
+        //based on direction multiply by neg
+
+        String check = "";
+        try {
+            for (int i = 0; i < 4; i++) {
+                check += data[row + i][col + i];
+            }
+        } catch (Exception _) {}
+
+
+
+        return check.equals("XMAS");
     }
 
     public static int starTwo(ArrayList<String> fileData) {
