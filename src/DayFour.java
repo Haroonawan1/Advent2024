@@ -119,13 +119,14 @@ public class DayFour {
 
                         ArrayList<String> checkArr = new ArrayList<>(Arrays.asList(check.split("")));
                         checkArr.sort(String.CASE_INSENSITIVE_ORDER);
-                        check = String.join("", checkArr);
+                        String sortedCheck = String.join("", checkArr);
 
-                        if (check.equals("AMMSS")) {
+
+                        if (sortedCheck.equals("AMMSS") && check.charAt(0) != check.charAt(4) && check.charAt(1) != check.charAt(3) && check.charAt(2) == 'A') {
                             sum++;
                         }
 
-                        //System.out.println(check);
+
                     } catch (Exception _) {}
                 }
             }
