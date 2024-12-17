@@ -10,11 +10,11 @@ public class Day {
         System.out.println("Star Two: " + starTwo(fileData));
     }
 
-    public static void starOne(ArrayList<String> fileData) {
+    public static int starOne(ArrayList<String> fileData) {
         return 0;
     }
 
-    public static void starTwo(ArrayList<String> fileData) {
+    public static int starTwo(ArrayList<String> fileData) {
         return 0;
     }
 
