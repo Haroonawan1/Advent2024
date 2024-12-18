@@ -5,16 +5,24 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 public class DaySix {
+    private static int gYPos;
+    private static int gXPos;
+    private static int distinctPositions;
+    private static String currentTile;
+
     public static void main(String[] args) {
-        ArrayList<String> fileData = getFileData("data/testInput");
+        gXPos = 0;
+        gYPos = 0;
+        distinctPositions = 0;
+        currentTile = ".";
+
+        ArrayList<String> fileData = getFileData("data/day6Input");
         System.out.println("Star One: " + starOne(fileData));
-        System.out.println("Star Two: " + starTwo(fileData));
+        //System.out.println("Star Two: " + starTwo(fileData));
     }
 
     public static int starOne(ArrayList<String> fileData) {
         String[][] map = new String[fileData.size()][fileData.getFirst().length()];
-        int gXPos = 0;
-        int gYPos = 0;
 
         for (int i = 0; i < fileData.size(); i++) {
             map[i] = fileData.get(i).split("");
@@ -26,28 +34,39 @@ public class DaySix {
             }
         }
 
-        int distinctPositions = 0;
         boolean doneWalking = false;
         while (!doneWalking) {
-            //check direction
-            //based on direction check next item
-            //if a ".", move increase sum and make "X"
-            //if "#" change direction
-
-            String currentTileStatus = "";
             switch (map[gYPos][gXPos]) {
-                case "<" -> {
-                    if (gXPos - 1 >= 0 && !map[gYPos][gXPos - 1].equals("#")) {
-                        map[gYPos][gXPos] = "X";
-                        currentTileStatus = map[gYPos][gXPos - 1];
-                        map[gYPos][gXPos - 1] = "<";
-                        if ()
-                    }
-                }
+                case "<" -> doneWalking = move(map, 0, -1, "<", "^");
+                case ">" -> doneWalking = move(map, 0, 1, ">", "v");
+                case "^" -> doneWalking = move(map, -1, 0, "^", ">");
+                case "v" -> doneWalking = move(map, 1, 0, "v", "<");
             }
         }
 
-        return 0;
+        return distinctPositions + 1;
+    }
+
+    public static boolean move(String[][] map, int deltaY, int deltaX, String currentDir, String nextDir) {
+        if (gYPos + deltaY < 0 || gYPos + deltaY == map.length || gXPos + deltaX < 0 || gXPos + deltaX > map[0].length) {
+            return true;
+        }
+
+        if (gYPos - 1 >= 0 && !map[gYPos + deltaY][gXPos + deltaX].equals("#")) {
+            if (currentTile.equals(".")) {
+                distinctPositions++;
+                map[gYPos][gXPos] = "X";
+            }
+            currentTile = map[gYPos + deltaY][gXPos + deltaX];
+            map[gYPos + deltaY][gXPos + deltaX] = currentDir;
+            gYPos += deltaY;
+            gXPos += deltaX;
+
+        } else {
+            map[gYPos][gXPos] = nextDir;
+        }
+
+        return false;
     }
 
     public static int starTwo(ArrayList<String> fileData) {
